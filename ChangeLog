@@ -1,0 +1,30 @@
+2004-04-14  Stephan Beyer <s-beyer@gmx.net>
+
+	* general: some small restructurizing, infos for first start
+	* main.c (main): reset old keyboard auto repeat state
+	* calibrate.c: calibration routines, file reading and writing
+
+2004-04-13  Stephan Beyer <s-beyer@gmx.net>
+
+	* main.c (EventLoop): print translated characters
+	* main.c (main): added -s option
+
+2004-03-02  Stephan Beyer <s-beyer@gmx.net>
+
+	* main.c (EventLoop): pressing 'q' (not 'Q'!) quits; printing
+		dashes and dots and spaces with a fixed 
+
+2004-02-29  Stephan Beyer <s-beyer@gmx.net>
+
+	* main.c (EventLoop): only react on KeyRelease if the pressed
+		key releases; calculate and print KeyPress duration
+	* morse.h: first chars for morse tree
+
+2004-02-28  Stephan Beyer <s-beyer@gmx.net>
+
+	* errors.c, errors.h: copied from IMine project
+	* icons/morse[1234].xpm: created with The Gimp
+	* main.c (main, EventLoop), main.h: whole X stuff, window, Xpm icon,
+		Focus and KeyEvents; -d, -g, -h and -r options
+	* Makefile, ChangeLog: created
+	* COPYING: created (GPL v2)

@@ -1,0 +1,13 @@
+Source: morse-x
+Section: hamradio
+Priority: optional
+Maintainer: Stephan Beyer <s-beyer@gmx.net>
+Build-Depends: debhelper (>= 4.0.0), libx11-dev | xlibs-dev (>> 4.1.0), libxpm-dev | xlibs-dev (>> 4.1.0)
+Standards-Version: 3.6.0
+
+Package: morse-x
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: morse "practicing" tool for X
+ With morse-x you put 'dit's and 'daw's into the given X window
+ by pressing keys and it tells you what you 'morsed in'.
