@@ -5,7 +5,7 @@ CC	= gcc
 LINKER	= gcc
 CFLAGS	= -ansi -pedantic -pedantic-errors -Wall -Werror -Wunreachable-code
 LDFLAGS	= -L/usr/X11R6/lib -L/usr/lib/X11R6/ -lX11 -lXpm
-OBJ	= errors.o calibrate.o main.o
+OBJ	= errors.o morse.o common.o calibrate.o options.o main.o
 BINARY	= morse-x
 CLEAN	= *~ *.bak *.o $(BINARY) Makefile.headers
 

@@ -37,6 +37,7 @@
 #include <X11/Xutil.h> /* XValue, YValue, WidthValue, HeightValue */
 
 #include "calibrate.h"
+#include "common.h"
 #include "errors.h"
 
 /* returns a pointer to a string contining the filename of 
@@ -91,73 +92,12 @@ void WriteCalibrateFile(int dur)
 	fclose(cf);
 }
 
-/* waits for one key press + release and then returns the duration */
-int CalibrateLoop(Display *display, Window window, GC gc)
-{
-	unsigned int width, height, null;
-	unsigned int keypressed = 0;
-	unsigned long keyptime = 0;
-	int keypduration = 0;
-
-	/* get width and height of window */
-	XGetGeometry(display, window, (Window*)&null, (int *)&null, 
-			(int *)&null, &width, &height, &null, &null);
-
-	while(!keypduration)
-	{
-		XEvent event;
-		XKeyEvent *keyevent;
-		XNextEvent(display, &event);
-
-		switch(event.type)
-		{
-			case KeyPress: /* key pressed? */
-				keyevent = (XKeyEvent *)&event;
-				if (!keypressed)
-				{
-					/* save keycode and time of KeyPress */
-					keypressed = keyevent->keycode;
-					keyptime = keyevent->time;
-					
-					/* fill with color */
-					XSetForeground(display, gc, 
-						WhitePixel(display, 
-						DefaultScreen(display)));
-					XFillRectangle(display, window, gc, 
-						0, 0, width, height);
-				}
-				break;
-			case KeyRelease: /* key released? */
-				keyevent = (XKeyEvent *)&event;
-				/* releasing the same key pressed? */
-				if (keypressed == keyevent->keycode)
-				{
-					/* calculate KeyPressed duration */
-					keypduration = keyevent->time
-								- keyptime;
-					/* fill with color */
-					XSetForeground(display, gc,
-						BlackPixel(display,
-						DefaultScreen(display)));
-					XFillRectangle(display, window, gc,
-						0, 0, width, height);
-				}
-				break;
-			case Expose: /* resized? get new geometry */
-				XGetGeometry(display, window, (Window*)&null, 
-						(int *)&null, (int *)&null,
-						&width, &height, &null, &null);
-				break;
-		}
-	}
-	return keypduration;
-}
-
 /* main calibration function: print info, get duration average, write it
- * to file and return it */
-int Calibrate(Display *display, Window window, GC gc)
+ * to file and return it; returns -1 if an exit was suggested */
+int Calibrate(void)
 {
 	int dur; /* the average duration */
+	int n; /* duration of one loop */
 
 	/* info */
 	puts("Speed Calibration\n\n"
@@ -173,27 +113,57 @@ int Calibrate(Display *display, Window window, GC gc)
 	"'dit' and a gap between words lasts 7 'dit's.\n\n"
 	"Now please morse:\n");
 
-	/* select events for input */
-	XSelectInput(display, window,
-		KeyPressMask | KeyReleaseMask | ExposureMask);
-
 	/* orders */
 	puts("\t* 'A' ('dit daw' / .-)");
-	dur = CalibrateLoop(display, window, gc); /* . */
-	dur += CalibrateLoop(display, window, gc) / 3; /* - */
-	puts("\t* 'N' ('daw dit' / -.)");
-	dur += CalibrateLoop(display, window, gc) / 3; /* - */
-	dur += CalibrateLoop(display, window, gc); /* . */
-	puts("\t* 'S' ('dit dit dit' / ...)");
-	dur +=	CalibrateLoop(display, window, gc) +
-		CalibrateLoop(display, window, gc) +
-		CalibrateLoop(display, window, gc); /* ... */
-	puts("\t* 'O' ('daw daw daw' / ---)");
-	dur += (CalibrateLoop(display, window, gc) +
-		CalibrateLoop(display, window, gc) +
-		CalibrateLoop(display, window, gc)) / 3; /* --- */
-	dur /= 10;
+	n = KeyPressLoop(NULL); /* . */
+	if (n < 0)
+		return n;
+	dur = n * 3;
+	n = KeyPressLoop(NULL); /* - */
+	if (n < 0)
+		return n;
+	dur += n;
 
+	puts("\t* 'N' ('daw dit' / -.)");
+	n = KeyPressLoop(NULL); /* - */
+	if (n < 0)
+		return n;
+	dur += n;
+	n = KeyPressLoop(NULL); /* . */
+	if (n < 0)
+		return n;
+	dur += n * 3;
+
+	puts("\t* 'S' ('dit dit dit' / ...)");
+
+	n = KeyPressLoop(NULL); /* . */
+	if (n < 0)
+		return n;
+	dur += n * 3;
+	n = KeyPressLoop(NULL); /* . */
+	if (n < 0)
+		return n;
+	dur += n * 3;
+	n = KeyPressLoop(NULL); /* . */
+	if (n < 0)
+		return n;
+	dur += n * 3;
+
+	puts("\t* 'O' ('daw daw daw' / ---)");
+	n = KeyPressLoop(NULL); /* - */
+	if (n < 0)
+		return n;
+	dur += n;
+	n = KeyPressLoop(NULL); /* - */
+	if (n < 0)
+		return n;
+	dur += n;
+	n = KeyPressLoop(NULL); /* - */
+	if (n < 0)
+		return n;
+	dur += n;
+
+	dur /= 30;
 	WriteCalibrateFile(dur);
 	puts("\nThanks! That's all!\nYou may morse now.\n");
 

@@ -5,9 +5,8 @@
 
 #define RC_FILE ".morse-x"
 
-int Calibrate(Display *, Window, GC);
-int CalibrateLoop(Display *, Window, GC);
-int ReadCalibrateFile(void);
+int Calibrate(void);
 void WriteCalibrateFile(int);
+int ReadCalibrateFile(void);
 
 #endif

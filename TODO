@@ -2,7 +2,5 @@ Todo:
 - adjustable colors, maybe transparency
   (see XColormap and XColor)
 - add missing morse characters (e.g. SOS)
-- make Destroy event work
-
-Planned next:
-- restructurize code
+- need correct focus behaviour (or GrabKeyboard until key released
+  when key pressed)

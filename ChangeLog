@@ -1,3 +1,9 @@
+2004-04-15  Stephan Beyer <s-beyer@gmx.net>
+
+	* common.c, main.c: made exitable via window manager
+	* general: code "cleanup" (restructurized) and split into
+		several modules (new are common, morse and options)
+
 2004-04-14  Stephan Beyer <s-beyer@gmx.net>
 
 	* general: some small restructurizing, infos for first start
