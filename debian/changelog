@@ -1,3 +1,9 @@
+morse-x (20040713) unstable; urgency=low
+
+  * Added manual page.
+
+ -- Stephan Beyer <s-beyer@gmx.net>  Tue, 13 Jul 2004 02:20:34 +0200
+
 morse-x (20040415) unstable; urgency=low
 
   * Delete window via window manager.

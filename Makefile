@@ -35,5 +35,5 @@ deb:
 	dpkg-buildpackage -rfakeroot
 
 deb-clean:
-	rm -rf debian/morse-x
+	rm -rf debian/morse-x debian/files debian/*substvars
 	$(MAKE) clean

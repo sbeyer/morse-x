@@ -1,0 +1,48 @@
+.TH "morse-x" "1" "20040713" "Stephan Beyer <s-beyer@gmx.net>" "hamradio"
+.SH "NAME"
+.LP 
+morse\-x \- morse "practicing" tool for X
+.SH "SYNTAX"
+.LP 
+morse\-x [\fIoptions\fP]
+.SH "DESCRIPTION"
+.LP 
+\fImorse\-x\fP offers you a window to put dits and daws
+into \- by pressing any key (except \fBq\fR = quit). On
+the console it prints each character you morsed in. (So
+start it in an x\-terminal\-emulator.) On the first 
+execution you have to calibrate the length of dits and 
+daws, so just follow the instructions on the console.
+
+.SH "OPTIONS"
+.LP 
+.TP 
+\fB\-c\fR
+Calibrate again, e.g. if the calibration of the first execution wasn't optimal.
+.TP 
+\fB\-d\fR \fIdisplay\fP
+set display (overrides DISPLAY)
+.TP 
+\fB\-g\fR \fIXGeometryString\fP
+set geometry of morse window (\fB\-g\fR without option prints a help)
+.TP 
+\fB\-h\fR
+prints usage information
+.TP 
+\fB\-r\fR \fIName\fP \fIClass\fP
+set WM_CLASS
+.TP 
+\fB\-s\fR
+verbose, show dits and daws (if calibration is bad and you don't know why)
+.SH "BUGS"
+.LP 
+Morse\-x saves the autorepeat state of the keyboard
+at startup, then autorepeat is turned off because morse\-x
+only works with autorepeat disabled. On exit the saved state
+will be activated again. This doesn't happen when
+crashed or killed, etc. To enable autorepeat manually, do:
+.br 
+\fIxset r on\fP.
+.SH "COPYRIGHT"
+.LP 
+(C) Stephan Beyer <s\-beyer@gmx.net>, 2004, GNU GPL

@@ -3,11 +3,14 @@ Section: hamradio
 Priority: optional
 Maintainer: Stephan Beyer <s-beyer@gmx.net>
 Build-Depends: debhelper (>= 4.0.0), libx11-dev | xlibs-dev (>> 4.1.0), libxpm-dev | xlibs-dev (>> 4.1.0)
-Standards-Version: 3.6.0
+Standards-Version: 3.6.1
 
 Package: morse-x
 Architecture: any
 Depends: ${shlibs:Depends}
 Description: morse "practicing" tool for X
- With morse-x you put 'dit's and 'daw's into the given X window
- by pressing keys and it tells you what you 'morsed in'.
+ morse-x offers you a window to put dits and daws into - by pressing any 
+ key (except q = quit). On the console it prints each character you morsed
+ in. (So start it in an x-terminal-emulator.) On the first execution you 
+ have to calibrate the length of dits and daws, so just follow the 
+ instructions on the console.
