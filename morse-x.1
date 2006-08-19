@@ -1,48 +1,64 @@
-.TH "morse-x" "1" "20040713" "Stephan Beyer <s-beyer@gmx.net>" "hamradio"
+.TH "morse-x" "1" "20060819" "Stephan Beyer" "hamradio"
 .SH "NAME"
-.LP 
-morse\-x \- morse "practicing" tool for X
+morse\-x \- morse practicing tool
 .SH "SYNTAX"
-.LP 
-morse\-x [\fIoptions\fP]
+.B morse\-x
+[\fIoptions\fP]
 .SH "DESCRIPTION"
 .LP 
-\fImorse\-x\fP offers you a window to put dits and daws
-into \- by pressing any key (except \fBq\fR = quit). On
-the console it prints each character you morsed in. (So
-start it in an x\-terminal\-emulator.) On the first 
-execution you have to calibrate the length of dits and 
-daws, so just follow the instructions on the console.
-
+In
+.B morse\-x
+you can use any key on your keyboard 
+as morse key (except \fBq\fR, which exits) and then it
+displays your morsed stuff as readable text on stdout.
+(You should execute morse\-x in an X terminal.)
+.LP 
+At the first start you will have to calibrate 
+morse\-x, so please follow the instructions
+on the console before pressing keys in the main window
+wildly.
 .SH "OPTIONS"
 .LP 
+Of course, morse\-x takes some options, some with
+arguments. See the following list. A preceding dash (\-) is
+optional.
+.LP 
 .TP 
-\fB\-c\fR
-Calibrate again, e.g. if the calibration of the first execution wasn't optimal.
+\fBc\fR
+Calibrate again, e.g. if the calibration of the first
+execution was suboptimal.
 .TP 
-\fB\-d\fR \fIdisplay\fP
-set display (overrides DISPLAY)
+\fBf\fR \fIfrequency\fP
+Set sound frequency.
 .TP 
-\fB\-g\fR \fIXGeometryString\fP
-set geometry of morse window (\fB\-g\fR without option prints a help)
+\fBg\fR
+Show dits as red dots and daws as red lines in the 
+main window.
 .TP 
-\fB\-h\fR
-prints usage information
+\fBh\fR
+Print usage information, the same you can read here.
+Hopefully.
 .TP 
-\fB\-r\fR \fIName\fP \fIClass\fP
-set WM_CLASS
+\fBm\fR
+Mute audio. No audio device will be opened.
 .TP 
-\fB\-s\fR
-verbose, show dits and daws (if calibration is bad and you don't know why)
+\fBr\fR \fIsamplerate\fP
+Set audio sample rate.
+.TP 
+\fBs\fR
+Show dits as dots and daws as dashes on stdout.
+.TP 
+\fBv\fR \fIvolume\fP
+Set sound volume.
+.LP 
+Note that older versions (2004*) were written using Xlib
+instead of libSDL and thus had some other options and 
+no audio output.
 .SH "BUGS"
-.LP 
-Morse\-x saves the autorepeat state of the keyboard
-at startup, then autorepeat is turned off because morse\-x
-only works with autorepeat disabled. On exit the saved state
-will be activated again. This doesn't happen when
-crashed or killed, etc. To enable autorepeat manually, do:
-.br 
-\fIxset r on\fP.
+None so far. Please report some.
 .SH "COPYRIGHT"
-.LP 
-(C) Stephan Beyer <s\-beyer@gmx.net>, 2004, GNU GPL
+Copyright \(co 2004, 2006 Stephan Beyer <s\-beyer@gmx.net>
+.LP
+This is free software.  You may redistribute copies of it under the terms of
+the GNU General Public License <http://www.gnu.org/licenses/gpl.html>.
+There is NO WARRANTY, to the extent permitted by law.

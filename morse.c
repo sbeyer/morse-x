@@ -6,7 +6,7 @@
    Description of this file:
        morse code functions
 
-   Copyright (C) GPL, 2004 Stephan Beyer - s-beyer@gmx.net
+   Copyright (C) GPL, 2004, 2006 Stephan Beyer - s-beyer@gmx.net
   
    Permission is hereby granted, free of charge, to any person obtaining a
    copy of this software and associated documentation files (the "Software"),
@@ -30,9 +30,8 @@
 
 #include <stdio.h> /* putchar(), printf()... */
 
-#include "options.h"
+#include "main.h"
 #include "calibrate.h"
-#include "common.h"
 
 /* the morse code */
 /* How I did it:
@@ -181,7 +180,7 @@ static const char* morse[] = { /* this tree contains ISO-8859-1 characters */
 	/* ------ */ NULL
 };
 #if 0
-	/* usw...: */
+	/* etc...: */
 	/* ....... */ " ERROR ",
 	/* ...--.. */ "ß",
 	/* ...---... */ " SOS "
@@ -189,7 +188,8 @@ static const char* morse[] = { /* this tree contains ISO-8859-1 characters */
 
 
 /* prints the character(s) of the given morse tree index i */
-void PrintChar(int i)
+void
+PrintChar(int i)
 {
 	if (opt.show)
 		putchar(' ');
@@ -201,11 +201,12 @@ void PrintChar(int i)
 		putchar(' ');
 }
 
-void MainProgram(void)
+void
+MainProgram(void)
 {
 	int dur = 0; /* keypress duration */
-	int i = 1; /* morse tree index, see morse.h */
-	unsigned long time = 0;
+	int i = 1; /* morse tree index, see intro comment */
+	unsigned int time = 0;
 	int durunit = ReadCalibrateFile(); /* duration of a 'dit' */
 
 	/* first start? */
@@ -213,13 +214,14 @@ void MainProgram(void)
 	{
 		puts("No calibration file found. I guess it's the first start.\n");
 		puts("Some general usage information:\n"
-		" (1) There is a black Morse window on your X screen.\n"
-		" (2) Pressing any key in that window will paint it white.\n"
-		"     A short pressing will be recognized as a 'dit', and if you hold the\n"
+		" (1) There is a small black Morse window on your X screen.\n"
+		" (2) Pressing 'q' in that window will quit.\n"
+		" (3) Pressing any other key in that window will paint it white.\n"
+		"     A short press will be recognized as a 'dit', and if you hold the\n"
 		"     key for a (short) while, it will be recognized as a 'daw'.\n"
 		" (3) The morsed results will only be displayed on this terminal.\n"
-		" (4) Pressing 'q' quits.\n"
-		" (5) Have fun.\n");
+		" (4) Also take a look at the manual page, please.\n"
+		" (5) Have fun!\n");
 		puts("Please 'dit' or 'daw' _once_ to go next.\n");
 
 		dur = KeyPressLoop(NULL);
@@ -231,6 +233,8 @@ void MainProgram(void)
 		durunit = Calibrate();
 
 	dur = durunit; /* just for exit check */
+	if(dur >= 0)
+		puts("Press 'q' in the main window to exit. Any other key morses.\nText:");
 	while (dur >= 0) /* main loop */
 	{
 		unsigned int oldtime = time; /* time of previous KeyRelease */
@@ -259,11 +263,16 @@ void MainProgram(void)
 			/* duration of 3 dits? => daw */
 			if (dur >= durunit * 3)
 			{
-				if (opt.show)
+				if(opt.showgfx)
+					paint("-"); /* paint */
+				if(opt.show)
 					putchar('-');
 				i = 2*i + 1;
+				
 			} else { /* a dit */
-				if (opt.show)
+				if(opt.showgfx)
+					paint("."); /* paint */
+				if(opt.show)
 					putchar('.');
 				i *= 2;
 			}
@@ -272,6 +281,5 @@ void MainProgram(void)
 	}
 	if (i > 1)
 		PrintChar(i);
-	puts("");
+	puts("\nBye!");
 }
-

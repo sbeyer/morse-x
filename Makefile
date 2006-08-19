@@ -1,18 +1,17 @@
-# GNU Make - Makefile
-# for morse-x (C) Stephan Beyer, 2004
-
 CC	= gcc
 LINKER	= gcc
-CFLAGS	= -ansi -pedantic -pedantic-errors -Wall -Werror -Wunreachable-code
-LDFLAGS	= -L/usr/X11R6/lib -L/usr/lib/X11R6/ -lX11 -lXpm
-OBJ	= errors.o morse.o common.o calibrate.o options.o main.o
+LIBS	= `sdl-config --libs` -lm
+CFL_W	= -Wno-sign-compare -Wpointer-arith -Wno-system-headers -Wshadow -Wbad-function-cast -Werror -Wunreachable-code
+CFLAGS	= -ansi -pedantic -pedantic-errors -Wall $(CFLAGS_W) `sdl-config --cflags`
+LDFLAGS	= -s
+OBJ	= errors.o morse.o calibrate.o audio.o main.o
 BINARY	= morse-x
 CLEAN	= *~ *.bak *.o $(BINARY) Makefile.headers
 
 .SUFFIXES: .c .o
 
 all: $(OBJ)
-	$(LINKER) $(LDFLAGS) -o "$(BINARY)"	$(OBJ)
+	$(LINKER) $(LIBS) $(LDFLAGS) -o "$(BINARY)"	$(OBJ)
 
 include Makefile.headers
 

@@ -1,6 +1,6 @@
-Todo:
-- adjustable colors, maybe transparency
-  (see XColormap and XColor)
+TODO?
 - add missing morse characters (e.g. SOS)
-- need correct focus behaviour (or GrabKeyboard until key released
-  when key pressed)
+- use SDLconsole (perhaps too bloated) or something to avoid needed usage 
+  of a terminal or x-terminal-emulator
+  (then I can think of a Windows port)
+- calibration-free, more intelligent timing (is needed?)

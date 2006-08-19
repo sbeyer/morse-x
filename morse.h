@@ -3,6 +3,7 @@
 #ifndef MORSE_H
 #define MORSE_H
 
-void PrintChar(int);
+/*void PrintChar(int);*/
+void MainProgram(void);
 
 #endif

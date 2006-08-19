@@ -1,3 +1,23 @@
+2006-08-19  Stephan Beyer <s-beyer@gmx.net>
+
+	* general,main.c: "port" from Xlib to libSDL (almost rewrite)
+	* common.c,common.h,xcommon.h,options.c,options.h: removed,
+		content moved to other files, mainly main.
+	* calibrate.c: calibration with orders in main window
+	* errors.c: added SDL_GetError() handling
+	* audio.c: audio support!
+	* icons/icon32.xpm: 32x32 icon created, xpm is not used
+		but the image is *generated* within main.c (SetWMStuff)
+	* morse-x.1: description rewritten, options updated, bugs from
+		Xlib version removed
+	* COPYING: took GPL2 text with new FSF office address
+	* TAGS: debtags tags I considered useful for morse-x
+	* debian/control: updated, took new description from manual page
+
+2004-07-13  Stephan Beyer <s-beyer@gmx.net>
+
+	* morse-x.1: generated using manedit
+
 2004-04-15  Stephan Beyer <s-beyer@gmx.net>
 
 	* common.c, main.c: made exitable via window manager

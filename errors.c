@@ -1,12 +1,12 @@
 /* errors.c
 ******************************************************************************
-   This file is part of morse-x. (taken from IMine code)
    Author: Stephan Beyer
    
    Description of this file:
-       this file contains error handling routines with everything I needed.
+       this file contains error handling routines with everything I need
+       * addition: SDL-specific errors
 
-   Copyright (C) GPL, 2003,2004 Stephan Beyer - s-beyer@gmx.net
+   Copyright (C) GPL, 2000-2006 Stephan Beyer - s-beyer@gmx.net
   
    Permission is hereby granted, free of charge, to any person obtaining a
    copy of this software and associated documentation files (the "Software"),
@@ -32,20 +32,23 @@
 #include <stdio.h> /* fprintf... */
 #include <stdlib.h> /* exit ... */
 #include <string.h> /* strerror ... */
+
+#include <SDL.h>
+
 #include "errors.h"
 
 /* comment out next line, if there are problems */
-extern char *strerror_r (int __errnum, char *__buf, size_t __buflen);
+extern char *strerror_r(int __errnum, char *__buf, size_t __buflen);
 
 /* prints an error message to stderr and exits with given nr,
  * doesn't exit when nr==0 */
-void ErrorMsg (signed int nr, const char *msg)
+void ErrorMsg(signed int nr, const char *msg)
 {
-	fprintf (stderr, "Error: %s\n", msg);
+	fprintf(stderr, "Error: %s\n", msg);
 	if (nr)
 	{
-		puts (ERROCCMSG);
-		exit (nr);
+		puts(ERROCCMSG);
+		exit(nr);
 	}
 }
 
@@ -62,13 +65,17 @@ void HandleError(const char *def, char *file, unsigned int line, signed int nr)
 		def = separator = "";
 	else
 		separator = " - ";
-	
-	fprintf (stderr, "%s%s%s (in file %s, line %d)\n", def, separator, 
-			strerror_r (err, buffer, sizeof(buffer)), file, line);
+
+	if(nr < errSDL)
+		fprintf(stderr, "%s%s%s (in file %s, line %d)\n", def, separator, 
+			strerror_r(err, buffer, sizeof(buffer)), file, line);
+	else
+		fprintf(stderr, "%s%s%s (in file %s, line %d)\n", def, separator, 
+			SDL_GetError(), file, line);
 	
 	if (nr)
 	{
-		puts (ERROCCMSG);
-		exit (nr);
+		puts(ERROCCMSG);
+		exit(nr);
 	}
 }

@@ -1,3 +1,10 @@
+morse-x (20060819) unstable; urgency=low
+
+  * Release is a port from Xlib to libSDL.
+
+ -- Stephan Beyer <s-beyer@gmx.net>  Sun, 20 Aug 2006 01:26:39 +0200
+
+
 morse-x (20040713) unstable; urgency=low
 
   * Added manual page.
