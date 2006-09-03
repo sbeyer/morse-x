@@ -33,7 +33,6 @@
 #include <SDL/SDL.h>
 
 #include "audio.h"
-#include "calibrate.h"
 #include "main.h"
 #include "morse.h"
 #include "errors.h"
@@ -57,16 +56,19 @@ Usage(char *binary)
 {
 	printf(	"Usage:  %s [options]\n\n"
 		"Possible options are:\n"
-		"\t-c       calibrate!\n"
+		"\t-c       try to check sending wpm\n"
 		"\t-f freq  set sound frequency [%d]\n"
 		"\t-g       like -s, but in main window\n"
 		"\t-h       print this usage information\n"
 		"\t-m       mute, no sounds are played\n"
 		"\t-r rate  set audio sample rate [%d]\n"
 		"\t-s       show dits (as '.') and daws (as '-')\n"
+		"\t-t       show morse code table and exit\n"
 		"\t-v vol   sound volume between 0 and 1 [%.1f]\n"
+		"\t-w wpm   set words per minute [%d]\n"
 		"The '-' prefix to options is optional.\n",
-		binary, DEFAULT_FREQ, DEFAULT_RATE, DEFAULT_VOLUME);
+		binary, DEFAULT_FREQ, DEFAULT_RATE, DEFAULT_VOLUME, 
+		DEFAULT_WPM);
 }
 
 /* handle options and open display */
@@ -76,13 +78,14 @@ HandleOptions(int argc, char **argv)
 	char **i; /* help pointer to process arguments */
 
 	/* option defaults */
-	opt.calibrate = 0;
+	opt.checkwpm = 0;
 	opt.showgfx = 0;
 	opt.show = 0;
 	opt.mute = 0;
 	opt.freq = DEFAULT_FREQ;
 	opt.rate = DEFAULT_RATE;
 	opt.vol = DEFAULT_VOLUME;
+	opt.wpm = DEFAULT_WPM;
 
 	/* go through the arguments */
 	i = argv+1;
@@ -93,7 +96,7 @@ HandleOptions(int argc, char **argv)
 		switch(**i)
 		{
 			case 'c':
-				opt.calibrate = 1;
+				opt.checkwpm = 1;
 				break;
 			case 'f':
 				i++;
@@ -127,6 +130,9 @@ HandleOptions(int argc, char **argv)
 			case 's':
 				opt.show = 1;
 				break;
+			case 't':
+				showTable();
+				exit(0);
 			case 'v':
 				i++;
 				if(*i)
@@ -136,6 +142,16 @@ HandleOptions(int argc, char **argv)
 						ErrorMsg(errARGS, "Volume must be a value between 0 and 1!");
 				} else
 					ErrorMsg(errARGS,"-v option needs volume!");
+				break;
+			case 'w':
+				i++;
+				if(*i)
+				{
+					opt.wpm = atoi(*i);
+					if(opt.wpm < 1 || opt.wpm > 60)
+						ErrorMsg(errARGS, "WPM must be an integer between 1 and 60!");
+				} else
+					ErrorMsg(errARGS,"-w option needs number of words per minute!");
 				break;
 			default:
 				ErrorMsg(errARGS, "Wrong arguments. Use -h option for help!");

@@ -3,4 +3,6 @@ TODO?
 - use SDLconsole (perhaps too bloated) or something to avoid needed usage 
   of a terminal or x-terminal-emulator
   (then I can think of a Windows port)
-- calibration-free, more intelligent timing (is needed?)
+
+TODO!
+- trainers for transmitting *and* receiving

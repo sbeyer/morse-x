@@ -1,3 +1,21 @@
+2006-09-03  Stephan Beyer <s-beyer@gmx.net>
+
+	* main.c: 
+	  * -t option stuff
+	  * removed use of calibration file, wpm number is used instead,
+	    so added -w option
+	  * -c now got a slightly different meaning (calibrate -> check wpm)
+	* main.h: version numbering change: <milestone number>.<date>
+	* calibrate.[ch]: removed
+	* morse.c (showTable): added for -t option
+	* morse.c (checkWPM): added, modified variant of Calibrate() from
+		calibrate.c
+	* morse-x.1: updated
+	* debian/: removed so that package doesn't become a native one,
+		also reset changelog file because version numbering changed
+		and I do not want to start a new epoch.
+	* icons/icon32.xpm: renamed to icons/morse-x.xpm
+
 2006-08-19  Stephan Beyer <s-beyer@gmx.net>
 
 	* general,main.c: "port" from Xlib to libSDL (almost rewrite)

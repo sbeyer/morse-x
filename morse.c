@@ -29,9 +29,9 @@
 */
 
 #include <stdio.h> /* putchar(), printf()... */
+#include <stdlib.h> /* malloc(), free(), ... */
 
 #include "main.h"
-#include "calibrate.h"
 
 /* the morse code */
 /* How I did it:
@@ -95,7 +95,7 @@ static const char* morse[] = { /* this tree contains ISO-8859-1 characters */
 	/* .-.-. */ " AR ", /* often "+" */
 	/* .-.-- */ NULL,
 	/* .--.. */ NULL,
-	/* .--.- */ "(бе)",
+	/* .--.- */ "{бе}",
 	/* .---. */ NULL,
 	/* .---- */ "1",
 	/* -.... */ "6",
@@ -186,19 +186,113 @@ static const char* morse[] = { /* this tree contains ISO-8859-1 characters */
 	/* ...---... */ " SOS "
 #endif
 
+#define LENGTH	(sizeof(morse) / sizeof(char *))
 
 /* prints the character(s) of the given morse tree index i */
 void
 PrintChar(int i)
 {
-	if (opt.show)
+	if(opt.show)
 		putchar(' ');
-	if ((i-2 < (sizeof(morse) / sizeof(char *))) && morse[i-2])
+	if((i-2 < LENGTH) && morse[i-2])
 		printf("%s", morse[i-2]);
 	else
 		printf("%%not defined%%");
-	if (opt.show)
+	if(opt.show)
 		putchar(' ');
+}
+
+/* returns ".-"-like C string for num */
+char *
+ditdaw_str(int num)
+{
+	char *ret;
+	int retlen = 0;
+	int t;
+
+	num += 2;
+	t = num;
+
+	do
+	{
+		retlen++;
+		t >>= 1;
+	} while(t);
+	ret = malloc(retlen);
+
+	for(t = 0; t < retlen; t++)
+		ret[t] = ((num>>(retlen-2-t))&1 ? '-' : '.');
+	ret[t-1] = 0;
+	return ret;	
+}
+
+
+/* for -t */
+void
+showTable(void)
+{
+	int i;
+	for(i = 0; i < LENGTH; i++)
+	{
+		if(morse[i])
+		{
+			char *x = ditdaw_str(i);
+			printf("%s\t%s\n",x,morse[i]);
+			free(x);
+		}
+	}
+}
+
+/* for -c, returns new durunit or -1 if an exit was suggested */
+int
+checkWPM(void)
+{
+	int dur = 0; /* the average duration */
+	int n; /* duration of one loop */
+
+	/* info */
+	puts("WPM Check\n---------\n\nNow please morse:\n");
+
+#define PRESS	n = KeyPressLoop(NULL); \
+		if (n < 0) \
+			return n;
+#define DIT	PRESS dur += n*3;
+#define DAW	PRESS dur += n;
+
+	/* orders */
+	puts("\t* 'A' ('dit daw' / .-)");
+	paint(".-");
+	DIT
+	paint("-");
+	DAW
+
+	puts("\t* 'N' ('daw dit' / -.)");
+	paint("-.");
+	DAW
+	paint(".");
+	DIT
+
+	puts("\t* 'S' ('dit dit dit' / ...)");
+	paint("...");
+	DIT
+	paint("..");
+	DIT
+	paint(".");
+	DIT
+
+	puts("\t* 'O' ('daw daw daw' / ---)");
+	paint("---");
+	DAW
+	paint("--");
+	DAW
+	paint("-");
+	DAW
+
+	dur /= 30;
+
+	puts("\nFinished.\n");
+
+	return dur;
 }
 
 void
@@ -207,34 +301,20 @@ MainProgram(void)
 	int dur = 0; /* keypress duration */
 	int i = 1; /* morse tree index, see intro comment */
 	unsigned int time = 0;
-	int durunit = ReadCalibrateFile(); /* duration of a 'dit' */
+	int durunit = 1200/opt.wpm; /* duration of a 'dit' */
 
-	/* first start? */
-	if (durunit < 0)
-	{
-		puts("No calibration file found. I guess it's the first start.\n");
-		puts("Some general usage information:\n"
-		" (1) There is a small black Morse window on your X screen.\n"
-		" (2) Pressing 'q' in that window will quit.\n"
-		" (3) Pressing any other key in that window will paint it white.\n"
-		"     A short press will be recognized as a 'dit', and if you hold the\n"
-		"     key for a (short) while, it will be recognized as a 'daw'.\n"
-		" (3) The morsed results will only be displayed on this terminal.\n"
-		" (4) Also take a look at the manual page, please.\n"
-		" (5) Have fun!\n");
-		puts("Please 'dit' or 'daw' _once_ to go next.\n");
-
-		dur = KeyPressLoop(NULL);
-		/* dur is only an exit-check here */
-	}
-	
-	/* calibrate! */
-	if ((dur >= 0) && (opt.calibrate || (durunit < 0)))
-		durunit = Calibrate();
+	/* checkwpm */
+	if (opt.checkwpm || (durunit < 0))
+		durunit = checkWPM();
 
 	dur = durunit; /* just for exit check */
 	if(dur >= 0)
-		puts("Press 'q' in the main window to exit. Any other key morses.\nText:");
+	{
+		printf("Using %d words per minute.\n\n"
+		       "Press 'q' in the main window to exit. Any other key morses.\n"
+		       "Text:\n", 1200/durunit); /* should equal opt.wpm */
+	}
+
 	while (dur >= 0) /* main loop */
 	{
 		unsigned int oldtime = time; /* time of previous KeyRelease */

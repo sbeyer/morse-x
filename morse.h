@@ -5,5 +5,6 @@
 
 /*void PrintChar(int);*/
 void MainProgram(void);
+void showTable(void);
 
 #endif

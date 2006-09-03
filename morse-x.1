@@ -1,4 +1,4 @@
-.TH "morse-x" "1" "20060819" "Stephan Beyer" "hamradio"
+.TH "morse-x" "1" "0.20060903" "Stephan Beyer" "hamradio"
 .SH "NAME"
 morse\-x \- morse practicing tool
 .SH "SYNTAX"
@@ -8,36 +8,28 @@ morse\-x \- morse practicing tool
 .LP 
 In
 .B morse\-x
-you can use any key on your keyboard 
-as morse key (except \fBq\fR, which exits) and then it
-displays your morsed stuff as readable text on stdout.
-(You should execute morse\-x in an X terminal.)
-.LP 
-At the first start you will have to calibrate 
-morse\-x, so please follow the instructions
-on the console before pressing keys in the main window
-wildly.
+you can use any key on your keyboard as morse key (except \fBq\fR, which exits)
+and then it displays your morsed stuff as readable text on stdout. (You should
+execute morse\-x in an X terminal.)
 .SH "OPTIONS"
 .LP 
-Of course, morse\-x takes some options, some with
-arguments. See the following list. A preceding dash (\-) is
-optional.
+Of course, morse\-x takes some options, some with arguments. See the following 
+list. A preceding dash (\-) is optional.
 .LP 
 .TP 
 \fBc\fR
-Calibrate again, e.g. if the calibration of the first
-execution was suboptimal.
+Tries to find out your number of words per minute. (In fact, it is like the 
+calibration function in former versions, except that it does not save the 
+result, it just tells you your the number of your words per minute.)
 .TP 
 \fBf\fR \fIfrequency\fP
 Set sound frequency.
 .TP 
 \fBg\fR
-Show dits as red dots and daws as red lines in the 
-main window.
+Show dits as red dots and daws as red lines in the main window.
 .TP 
 \fBh\fR
-Print usage information, the same you can read here.
-Hopefully.
+Print usage information, the same you can read here. Hopefully.
 .TP 
 \fBm\fR
 Mute audio. No audio device will be opened.
@@ -47,13 +39,21 @@ Set audio sample rate.
 .TP 
 \fBs\fR
 Show dits as dots and daws as dashes on stdout.
+.TP
+\fBt\fR
+Show used morse code table and exit. If you have suggestions on that
+table, please let me know.
 .TP 
 \fBv\fR \fIvolume\fP
-Set sound volume.
+Set sound volume. This must be a value between 0 and 1.
+.TP 
+\fBw\fR \fIwpm\fP
+Set words per minute. This must be an integer between 1 and 60.
 .LP 
-Note that older versions (2004*) were written using Xlib
-instead of libSDL and thus had some other options and 
-no audio output.
+Note that older versions (2004*) were written using Xlib instead of libSDL
+and thus had some other options and no audio output.
+By the way, the .morse-x file of earlier versions is no longer needed. You
+may remove it.
 .SH "BUGS"
 None so far. Please report some.
 .SH "COPYRIGHT"
