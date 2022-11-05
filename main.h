@@ -24,7 +24,7 @@ typedef struct {
 	float vol;              /* -v vol */
 	int wpm;                /* -w wpm */
 } Opt;
-Opt opt;
+extern Opt opt;
 
 void paint(char *);
 

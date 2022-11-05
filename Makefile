@@ -11,7 +11,7 @@ CLEAN	= *~ *.bak *.o $(BINARY) Makefile.headers
 .SUFFIXES: .c .o
 
 all: $(OBJ)
-	$(LINKER) $(LIBS) $(LDFLAGS) -o "$(BINARY)"	$(OBJ)
+	$(LINKER) $(LDFLAGS) -o "$(BINARY)"	$(OBJ) $(LIBS)
 
 include Makefile.headers
 

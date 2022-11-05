@@ -37,6 +37,9 @@
 #include "morse.h"
 #include "errors.h"
 
+/* global options */
+Opt opt;
+
 /* global variables and constants */
 SDL_Surface *screen;
 
